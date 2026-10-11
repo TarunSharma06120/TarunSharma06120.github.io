@@ -302,6 +302,54 @@ nav{position:sticky}
 .chain li.lit::before{background:var(--amber)}
 @media (prefers-reduced-motion:reduce){.chain li .mail{transition:none}.caret{animation:none}}
 
+[hidden]{display:none!important}
+/* case study dialog */
+.cs-open{margin-top:12px;align-self:flex-start;font-family:var(--mono);font-size:13px;padding:8px 14px;border-radius:999px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+.cs-open:hover{background:var(--accent);color:var(--bg)}
+.cs{position:fixed;inset:0;z-index:60;background:rgba(5,12,20,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 16px 40px}
+.cs-panel{position:relative;width:min(760px,100%);background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,40px);box-shadow:0 40px 90px -40px rgba(0,0,0,.6)}
+.cs-panel h2{font-size:clamp(26px,4vw,36px);font-weight:800;margin-top:6px}
+.cs-panel h3{font-size:19px;font-weight:700;margin:26px 0 8px}
+.cs-panel p,.cs-panel li{color:var(--muted);font-size:15.5px;line-height:1.65}
+.cs-panel ul{padding-left:18px;margin:0}
+.cs-panel li{margin-bottom:6px}
+.cs-panel li b{color:var(--fg)}
+.cs-lede{font-size:17px!important;color:var(--fg)!important;margin:12px 0}
+.cs-meta{display:flex;flex-wrap:wrap;gap:8px}
+.cs-meta span{font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.cs-close{position:absolute;top:12px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-size:20px;cursor:pointer}
+.cs-flow{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;counter-reset:f}
+.cs-flow li{counter-increment:f;border:1px solid var(--line);border-radius:12px;padding:12px;margin:0;min-width:0}
+.cs-flow li::before{content:counter(f);display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--bg);font-family:var(--mono);font-size:11px;margin-bottom:6px}
+.cs-flow b{display:block;color:var(--fg)}
+.cs-flow span{display:block;font-size:13.5px;line-height:1.45}
+@media (max-width:640px){.cs-flow{grid-template-columns:1fr 1fr}}
+body.cs-lock{overflow:hidden}
+.cs-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14.5px}
+.cs-table th,.cs-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.cs-table th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cs-table td:last-child{font-variant-numeric:tabular-nums;color:var(--fg)}
+
+/* festive extras */
+.dude .santa,.diyas,.bulbs,.fireworks,.snow{display:none}
+.fest-christmas .dude .santa{display:inline}
+.fest-diwali .diyas{display:block}
+.fest-diwali .bulbs{display:flex}
+.diyas{position:absolute;left:250px;bottom:8px;width:110px;height:28px;z-index:2}
+.diyas .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flicker .9s ease-in-out infinite alternate}
+.diyas g:nth-child(2) .flame{animation-delay:.3s}.diyas g:nth-child(3) .flame{animation-delay:.6s}
+@keyframes flicker{from{transform:scale(.9,.85);opacity:.85}to{transform:scale(1.05,1.12);opacity:1}}
+.bulbs{position:fixed;left:0;right:0;top:calc(62px + env(safe-area-inset-top,0px));z-index:9;justify-content:space-around;pointer-events:none;height:22px;background:radial-gradient(ellipse at 50% -120%,transparent 60%,rgba(0,0,0,0) 61%)}
+.bulbs i{width:9px;height:13px;border-radius:50% 50% 45% 45%;margin-top:6px;animation:bulb 1.6s ease-in-out infinite;box-shadow:0 0 10px currentColor}
+@keyframes bulb{0%,100%{opacity:.45}50%{opacity:1}}
+.fest-diwali .sky .fireworks,.fest-newyear .sky .fireworks{display:block;opacity:1}
+.fireworks{inset:0;width:100%;height:100%}
+.fest-christmas .sky .snow{display:block;opacity:1}
+.snow{inset:0}
+.snow i{position:absolute;top:-10px;width:6px;height:6px;border-radius:50%;background:#FFFFFF;opacity:.85;animation:snowfall linear infinite}
+@keyframes snowfall{to{transform:translate(var(--sx,20px),105vh)}}
+@media (prefers-reduced-motion:reduce){.diyas .flame,.bulbs i,.snow i{animation:none}}
+
 /* recognition block */
 .roles{margin:-6px 0 10px;font-size:13.5px;color:var(--muted);font-family:var(--mono)}
 .now.award{background:rgba(184,110,18,.14);color:var(--amber)}
@@ -441,6 +489,8 @@ body{padding-bottom:120px}
   <div class="sun"></div>
   <div class="moon"></div>
   <div class="stars" id="stars"></div>
+  <canvas class="fireworks" id="fireworks"></canvas>
+  <div class="snow" id="snow"></div>
   <div class="shoot"></div>
   <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div>
   <svg class="hills" viewBox="0 0 1440 220" preserveAspectRatio="none"><path class="h1" d="M0 130 Q200 50 420 112 T860 100 T1240 80 T1440 110 V220 H0Z"/><path class="h2" d="M0 178 Q260 110 560 160 T1080 150 T1440 168 V220 H0Z"/></svg>
@@ -474,6 +524,7 @@ body{padding-bottom:120px}
           <a class="btn primary" href="#contact">Get in touch</a>
           <a class="btn ghost" href="https://www.linkedin.com/in/tarun-sharma-973a08200" target="_blank" rel="noopener">LinkedIn ↗</a>
           <a class="btn ghost" href="https://www.salesforce.com/trailblazer/req2ypxan6kyw0dfmn" target="_blank" rel="noopener">Trailhead ↗</a>
+          <a class="btn ghost" href="Tarun_Sharma_Resume.pdf" download>Resume ↓</a>
         </div>
       <div class="console" aria-label="A SOQL query that returns Tarun's profile">
         <header><span>Developer Console · Query Editor</span><b><i></i><i></i><i></i></b></header>
@@ -591,42 +642,55 @@ body{padding-bottom:120px}
           <h3>Resource Allocation Agent</h3>
           <p>An Agentforce agent that answers "who's on which project?" by rendering a custom LWC right in the chat, listing each employee's project allocations and hours.</p>
           <div class="metric">Capacity answers for managers, in chat</div>
+          <button type="button" class="cs-open" data-case="allocation-agent">Read the case study →</button>
         </article>
         <article class="card" data-cat="lwc">
           <div class="card-top"><span class="kind">Apex · LWC · Chart.js</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M7 16l4-5 3 3 5-7"/></svg></span></div>
           <h3>Employee Efficiency Dashboard</h3>
           <p>An Apex controller feeds an LWC that charts employee efficiency with Chart.js, so leads can compare output across people and periods.</p>
           <div class="metric">Live efficiency charts</div>
+          <button type="button" class="cs-open" data-case="efficiency-dashboard">Read the case study →</button>
         </article>
         <article class="card feature" data-cat="lwc">
           <div class="card-top"><span class="kind">Internal portal · CRMIT Solutions</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.5-3.8"/></svg></span></div>
           <h3>Skill Tracking &amp; Approval Portal</h3>
-          <p>Employees add their skills, managers approve them, and the system emails the right summary to every level of the organisation.</p>
+          <p>Employees add or remove skills in an LWC. A skill appears only after the manager approves it, and each level gets an email table of employees with missing skill names.</p>
           <ol class="chain">
-            <li><span class="mail" aria-hidden="true"><svg viewBox="0 0 22 16"><rect x="1" y="1" width="20" height="14" rx="2"/><path d="M1.5 1.8 L11 9 L20.5 1.8"/></svg></span><b>Employee</b><span>Adds any skill to their profile.</span></li>
+            <li><span class="mail" aria-hidden="true"><svg viewBox="0 0 22 16"><rect x="1" y="1" width="20" height="14" rx="2"/><path d="M1.5 1.8 L11 9 L20.5 1.8"/></svg></span><b>Employee</b><span>Adds or removes skills in the LWC.</span></li>
             <li><span class="mail" aria-hidden="true"><svg viewBox="0 0 22 16"><rect x="1" y="1" width="20" height="14" rx="2"/><path d="M1.5 1.8 L11 9 L20.5 1.8"/></svg></span><b>Manager</b><span>Approves it. Employee and manager both get an email.</span></li>
             <li><span class="mail" aria-hidden="true"><svg viewBox="0 0 22 16"><rect x="1" y="1" width="20" height="14" rx="2"/><path d="M1.5 1.8 L11 9 L20.5 1.8"/></svg></span><b>Branch head</b><span>Gets a table of everyone in the branch who is missing skills.</span></li>
             <li><span class="mail" aria-hidden="true"><svg viewBox="0 0 22 16"><rect x="1" y="1" width="20" height="14" rx="2"/><path d="M1.5 1.8 L11 9 L20.5 1.8"/></svg></span><b>HR</b><span>Gets the same table for the whole company.</span></li>
           </ol>
           <div class="metric">Managers also get a table of their own reports with missing skills</div>
+          <button type="button" class="cs-open" data-case="skill-portal">Read the case study →</button>
         </article>
         <article class="card feature" data-cat="fsc integration">
           <div class="card-top"><span class="kind">Managed package · 2GP</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg></span></div>
           <h3>Meta Tax Calculator</h3>
-          <p>A second-generation managed package that calculates tax generically on any object, using Avalara, with Sales Order to Invoice distribution in Apex.</p>
+          <p>A generic 2GP that calculates Avalara tax for any object: pass a record Id and the field names for quantity, address, product, tax and errors. Callable from Apex and Flow.</p>
           <div class="metric">Works on any object, any org</div>
+          <button type="button" class="cs-open" data-case="tax-package">Read the case study →</button>
+        </article>
+        <article class="card feature" data-cat="fsc integration">
+          <div class="card-top"><span class="kind">Apex · Avalara · Simulator Components</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21z"/><path d="M9 15l6-6"/><circle cx="9.5" cy="9.5" r="1"/><circle cx="14.5" cy="14.5" r="1"/></svg></span></div>
+          <h3>Invoice Tax Without Extra Callouts</h3>
+          <p>When Sales Order lines become Invoice lines, my logic reuses the tax Avalara already calculated on the order and applies it per unit invoiced, so partial quantities stay accurate.</p>
+          <div class="metric">Zero Avalara callouts at the invoice step</div>
+          <button type="button" class="cs-open" data-case="invoice-tax">Read the case study →</button>
         </article>
         <article class="card" data-cat="integration java">
           <div class="card-top"><span class="kind">Integration · Java · Healthcare</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 11l10-4M7 13l10 4"/></svg></span></div>
           <h3>UHC Kafka API Integration</h3>
           <p>A Java Spring Boot middleware between Salesforce and Kafka for UnitedHealthcare, streaming high volumes of records in real time.</p>
           <div class="metric">Real-time, high throughput</div>
+          <button type="button" class="cs-open" data-case="kafka-uhc">Read the case study →</button>
         </article>
         <article class="card" data-cat="java">
           <div class="card-top"><span class="kind">Java · Spring Boot · React</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 18h8M7 21h10"/><path d="M8 14c-2-1.2-3-3-3-5h14c0 2-1 3.8-3 5z"/><path d="M19 9h1.5a2 2 0 0 1 0 4H18"/><path d="M10 6c0-1.5 1-1.5 1-3M14 6c0-1.5 1-1.5 1-3"/></svg></span></div>
           <h3>Employee Portal (Java full stack)</h3>
           <p>A Spring Boot app with login and logout and employee records stored through Hibernate (Spring Data JPA). I built the UI first in Thymeleaf, then rebuilt it in React, pairing with AI assistants along the way.</p>
           <div class="metric">Spring Boot · Hibernate · Thymeleaf → React</div>
+          <button type="button" class="cs-open" data-case="employee-portal">Read the case study →</button>
         </article>
         <article class="card" data-cat="integration">
           <div class="card-top"><span class="kind">Commerce · Integration</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h2.5l2 11h10.5l2-8H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span></div>
@@ -726,6 +790,7 @@ body{padding-bottom:120px}
           <p>Hiring for Salesforce FSC, OmniStudio or Agentforce, or have a project in mind? Tell my assistant what you need and it lands straight in my inbox. I usually reply within a day or two.</p>
           <a class="li-link" href="https://www.linkedin.com/in/tarun-sharma-973a08200" target="_blank" rel="noopener">Or message me on LinkedIn ↗</a>
           <a class="li-link" href="https://www.salesforce.com/trailblazer/req2ypxan6kyw0dfmn" target="_blank" rel="noopener">View my Trailhead profile ↗</a>
+          <a class="li-link" href="Tarun_Sharma_Resume.pdf" download>Download my resume (PDF) ↓</a>
         </div>
         <div class="chat" id="chat" aria-label="Contact assistant">
           <div class="chat-head"><span class="dot"></span><div><b>Tarun's assistant</b><small>Sends your message to Tarun</small></div></div>
@@ -746,6 +811,7 @@ body{padding-bottom:120px}
   </div>
 </main>
 
+<div class="bulbs" id="bulbs" aria-hidden="true"></div>
 <section class="lane" id="lane" data-scene="day" aria-label="Message courier">
   <!-- night: bed, bedside table with specs and lamp -->
   <svg class="scene night" viewBox="0 0 300 110" aria-hidden="true">
@@ -797,6 +863,11 @@ body{padding-bottom:120px}
     <path d="M40 110 l3 -9 l2 9 M48 110 l2 -7 l2 7 M134 110 l3 -8 l2 8 M142 110 l2 -6 l2 6" stroke="#2A1530" stroke-width="1.6" fill="none"/>
   </svg>
 
+  <svg class="diyas" viewBox="0 0 120 30" aria-hidden="true">
+    <g><ellipse cx="20" cy="22" rx="12" ry="5" fill="#C4622D"/><path d="M8 20 Q20 30 32 20 Z" fill="#E07A3F"/><path class="flame" d="M20 9 Q24 15 20 18 Q16 15 20 9 Z" fill="#FFC94D"/></g>
+    <g><ellipse cx="60" cy="22" rx="12" ry="5" fill="#C4622D"/><path d="M48 20 Q60 30 72 20 Z" fill="#E07A3F"/><path class="flame" d="M60 9 Q64 15 60 18 Q56 15 60 9 Z" fill="#FFC94D"/></g>
+    <g><ellipse cx="100" cy="22" rx="12" ry="5" fill="#C4622D"/><path d="M88 20 Q100 30 112 20 Z" fill="#E07A3F"/><path class="flame" d="M100 9 Q104 15 100 18 Q96 15 100 9 Z" fill="#FFC94D"/></g>
+  </svg>
   <div class="flyspecs" id="flyspecs" aria-hidden="true"><svg viewBox="0 0 24 10"><circle cx="6" cy="5" r="4"/><circle cx="18" cy="5" r="4"/><path d="M10 5 h4" fill="none"/></svg></div>
   <div class="courier" id="courier">
     <div class="bubble hide" id="bubble" role="status">
@@ -820,7 +891,8 @@ body{padding-bottom:120px}
           <path d="M22 30 Q23 14 40 14 Q57 14 58 30 Z" fill="#0A6C6A"/>
           <rect x="40" y="27" width="22" height="5" rx="2.5" fill="#08595A"/>
           <circle cx="40" cy="17" r="2.5" fill="#F0B866"/>
-          <g class="eyes"><ellipse cx="34" cy="37" rx="2.4" ry="3" fill="#1A1A1A"/><ellipse cx="46" cy="37" rx="2.4" ry="3" fill="#1A1A1A"/></g>
+          <g class="santa"><path d="M21 28 Q24 6 46 9 Q58 11 64 22 L58 26 Q52 17 44 16 Q30 16 27 30 Z" fill="#D63A3A"/><rect x="19" y="26" width="42" height="7" rx="3.5" fill="#FFFFFF"/><circle cx="62" cy="24" r="4.5" fill="#FFFFFF"/></g>
+          <g class="eyes"><g class="pupils"><ellipse cx="34" cy="37" rx="2.4" ry="3" fill="#1A1A1A"/><ellipse cx="46" cy="37" rx="2.4" ry="3" fill="#1A1A1A"/></g></g>
           <g class="eyesClosed" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M31 37 q3 2.5 6 0"/><path d="M43 37 q3 2.5 6 0"/></g>
           <circle cx="30" cy="43" r="2.6" fill="#F29C8C" opacity=".7"/><circle cx="50" cy="43" r="2.6" fill="#F29C8C" opacity=".7"/>
           <path d="M35 44 Q40 49 45 44" stroke="#7A3B2A" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -836,6 +908,142 @@ body{padding-bottom:120px}
     </div>
   </div>
 </section>
+
+<div class="cs" id="cs-allocation-agent" role="dialog" aria-modal="true" aria-labelledby="cs-title-allocation-agent" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · CRMIT Solutions · Agentforce</span>
+    <h2 id="cs-title-allocation-agent">Resource Allocation Agent</h2>
+    <p class="cs-lede">An Agentforce agent that answers managers' staffing questions right in chat, and replies with a custom Lightning Web Component instead of a wall of text.</p>
+    <div class="cs-meta"><span>Role: built the agent action and the LWC</span><span>Agentforce · Apex · LWC · SOQL</span></div>
+    <h3>The problem</h3>
+    <p>To see who was working on what, managers had to open reports, filter by project and add up hours themselves. The questions were simple, but getting answers was slow.</p>
+    <h3>What managers want to know</h3>
+    <ul><li>Who is working on project X, and for how many hours?</li><li>How many hours is a given employee allocated across all projects?</li><li>Who has spare capacity for new work, and who is fully booked?</li><li>Which projects is my team spread across right now?</li></ul>
+    <h3>What I built</h3>
+    <ul><li><b>Agent topic and action:</b> the manager asks in plain language and Agentforce routes the question to an allocation action.</li><li><b>Apex logic:</b> the action queries allocation records and returns employees, projects and allocated hours.</li><li><b>LWC rendered in chat:</b> instead of a text answer, the agent shows a component listing each employee with their projects and hours, so it can be scanned at a glance.</li></ul>
+    <h3>How it flows</h3>
+    <ol class="cs-flow"><li><b>Manager</b><span>Asks: who is on project X?</span></li><li><b>Agentforce</b><span>Picks the allocation topic and action</span></li><li><b>Apex</b><span>Queries allocations and hours</span></li><li><b>LWC in chat</b><span>Shows employees, projects and hours</span></li></ol>
+    <h3>Why a component instead of text</h3>
+    <ul><li>Hours and project lists are tabular data, which reads far better as a table than as sentences.</li><li>The same component can be reused anywhere in Salesforce, not only in the agent.</li></ul>
+    <h3>Outcome</h3>
+    <p>Managers get staffing answers in seconds by asking a question, without building or filtering reports.</p>
+  </div>
+</div>
+<div class="cs" id="cs-efficiency-dashboard" role="dialog" aria-modal="true" aria-labelledby="cs-title-efficiency-dashboard" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · CRMIT Solutions · LWC</span>
+    <h2 id="cs-title-efficiency-dashboard">Employee Efficiency Dashboard</h2>
+    <p class="cs-lede">An Apex controller and LWC that chart each employee's expected versus actual performance with Chart.js, with hover values and time filters.</p>
+    <div class="cs-meta"><span>Role: built the controller and the dashboard</span><span>Apex · LWC · Chart.js · SOQL</span></div>
+    <h3>The problem</h3>
+    <p>Leads wanted to compare what each person was expected to deliver against what they actually delivered, over different periods, and spot the gap quickly.</p>
+    <h3>Why Chart.js instead of standard reports</h3>
+    <ul><li><b>Two series on one chart:</b> expected and actual performance side by side for the same employee and period.</li><li><b>Exact values on hover:</b> tooltips show the precise number for each point, so nobody has to guess from the axis.</li><li><b>Custom filters:</b> switch the chart to a particular week or time range without building a new report.</li><li><b>Full control inside an LWC:</b> layout, colours and interactions fit the page instead of being limited to standard dashboard components.</li></ul>
+    <h3>What I built</h3>
+    <ul><li><b>Apex controller:</b> aggregates expected and actual figures by employee and period and returns them to the component.</li><li><b>LWC:</b> loads Chart.js from a static resource, draws the expected and actual series, and re-renders when filters change.</li><li><b>Filters:</b> week and date-range selection drive new data from the controller.</li></ul>
+    <h3>How it flows</h3>
+    <ol class="cs-flow"><li><b>Lead</b><span>Picks an employee and a week or range</span></li><li><b>Apex</b><span>Returns expected and actual totals</span></li><li><b>Chart.js</b><span>Draws both series together</span></li><li><b>Hover</b><span>Shows exact values per point</span></li></ol>
+    <h3>Outcome</h3>
+    <p>Expected and actual performance became one interactive chart that leads can filter by week, instead of separate reports to compare by hand.</p>
+  </div>
+</div>
+<div class="cs" id="cs-skill-portal" role="dialog" aria-modal="true" aria-labelledby="cs-title-skill-portal" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · CRMIT Solutions</span>
+    <h2 id="cs-title-skill-portal">Skill Tracking &amp; Approval Portal</h2>
+    <p class="cs-lede">An internal Salesforce portal where employees manage their skills, managers approve them, and every level of the company is emailed the gaps it is responsible for.</p>
+    <div class="cs-meta"><span>Role: designed and built it end to end</span><span>Apex · LWC · SOQL · HTML email</span></div>
+    <h3>The problem</h3>
+    <p>Nobody had one reliable view of who knew what. Skills lived in people's heads and spreadsheets, so managers could not see gaps in their teams, and branch heads and HR could not see gaps across branches or the company.</p>
+    <h3>What I built</h3>
+    <ul><li><b>Skills LWC:</b> employees add new skills and remove ones that no longer apply.</li><li><b>Approval before visibility:</b> each new skill goes to the employee's manager for approval. Only approved skills appear to the employee, managers, branch head, CCM and HR.</li><li><b>Employee Skills controller (Apex):</b> handles adding, removing, approving and querying skills, and builds the summaries.</li><li><b>Notifications:</b> when a request is decided, both the employee and the manager get an email.</li><li><b>Missing-skill digests:</b> each level gets an email table of employees and the names of the skills they are missing.</li></ul>
+    <h3>How the data flows</h3>
+    <ol class="cs-flow"><li><b>Employee</b><span>Adds or removes a skill in the LWC</span></li><li><b>Manager</b><span>Approves it; both get an email, plus a table of their reports' missing skills</span></li><li><b>Branch head</b><span>Table of everyone in the branch with missing skill names</span></li><li><b>HR</b><span>The same table for the whole company</span></li></ol>
+    <h3>Design decisions</h3>
+    <ul><li>Skills are visible only after approval, so the record stays trustworthy.</li><li>One controller serves every audience, so each digest is the same query scoped by manager, branch or company.</li><li>Emails are plain HTML tables, so they read well in any mail client without logging in.</li></ul>
+    <h3>Outcome</h3>
+    <p>Skills became an approved record instead of guesswork, and every level, from team managers to HR, regularly sees the missing skills in its own area.</p>
+  </div>
+</div>
+<div class="cs" id="cs-tax-package" role="dialog" aria-modal="true" aria-labelledby="cs-title-tax-package" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · Metadologie · 2GP</span>
+    <h2 id="cs-title-tax-package">Meta Tax Calculator</h2>
+    <p class="cs-lede">A generic second-generation managed package that calculates tax through Avalara for any object, configured by field names instead of custom code.</p>
+    <div class="cs-meta"><span>Role: designed and built the package</span><span>Apex · Schema describe · Avalara API · Flow · 2GP</span></div>
+    <h3>The problem</h3>
+    <p>Several projects needed tax calculation, and each one was about to rebuild the same Avalara integration for its own objects.</p>
+    <h3>What I built</h3>
+    <ul><li><b>Generic inputs:</b> a record Id plus the names of the fields that hold quantity, address and product, the field to write the tax into, and a field for error messages.</li><li><b>Works on any object:</b> from the record Id, the package uses the Schema class to identify the object and read the configured fields dynamically.</li><li><b>Avalara callout:</b> sends the quantity, address and product to Avalara and reads back the tax.</li><li><b>Writes the result back:</b> the tax goes into the specified tax field. If anything fails, the reason is stored in the error field.</li><li><b>Callable anywhere:</b> from Apex and from Flow.</li></ul>
+    <h3>How it flows</h3>
+    <ol class="cs-flow"><li><b>Apex or Flow</b><span>Passes record Id and field names</span></li><li><b>Schema</b><span>Finds the object and reads the fields</span></li><li><b>Avalara</b><span>Calculates the tax</span></li><li><b>Record</b><span>Tax or error saved to the chosen fields</span></li></ol>
+    <h3>Design decisions</h3>
+    <ul><li>Configuration over code: a new object needs field names, not a new class.</li><li>Errors are saved on the record, so admins can see what went wrong without reading logs.</li><li>Packaged as a 2GP so it installs cleanly and versions across orgs.</li></ul>
+    <h3>Outcome</h3>
+    <p>One reusable package replaced per-project tax integrations, and any object in any org could get Avalara tax by configuration.</p>
+  </div>
+</div>
+<div class="cs" id="cs-invoice-tax" role="dialog" aria-modal="true" aria-labelledby="cs-title-invoice-tax" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · Metadologie · Simulator Components</span>
+    <h2 id="cs-title-invoice-tax">Invoice Tax Without Extra Callouts</h2>
+    <p class="cs-lede">Logic that reuses the tax already calculated on Sales Order lines when they are invoiced, so invoices get accurate tax without calling Avalara again.</p>
+    <div class="cs-meta"><span>Role: designed and built the logic</span><span>Apex · Triggers · Avalara API</span></div>
+    <h3>The problem</h3>
+    <p>Sales Orders and their lines already had tax calculated through Avalara. When an order was converted into an Invoice and Invoice Lines, the system called Avalara again for the same goods, adding callouts for numbers we already had.</p>
+    <h3>What I built</h3>
+    <ul><li>When lines are converted to an invoice, the logic reads the tax already stored on each Sales Order line instead of calling Avalara.</li><li>It calculates tax per unit from the order line and applies it to the quantity actually being invoiced, so partial conversions stay accurate.</li><li>The invoice total tax is the sum of its lines, however many lines or orders are converted.</li></ul>
+    <h3>Worked example</h3>
+    <p>A Sales Order has 3 lines totalling ₹300, with ₹30 tax calculated by Avalara (₹10 per line). One line has a quantity of 10 units and ₹10 tax, so ₹1 per unit. Only 5 of those 10 units are converted to an invoice.</p><table class="cs-table"><thead><tr><th>Step</th><th>Value</th></tr></thead><tbody><tr><td>Order line tax</td><td>₹10 for 10 units</td></tr><tr><td>Tax per unit</td><td>₹10 ÷ 10 = ₹1</td></tr><tr><td>Units invoiced</td><td>5</td></tr><tr><td>Invoice line tax</td><td>5 × ₹1 = ₹5</td></tr><tr><td>Avalara callouts at invoice</td><td>0</td></tr></tbody></table>
+    <h3>How it flows</h3>
+    <ol class="cs-flow"><li><b>Sales Order</b><span>Avalara calculates tax per line once</span></li><li><b>Convert</b><span>Lines or partial quantities move to an invoice</span></li><li><b>My logic</b><span>Tax per unit × units invoiced</span></li><li><b>Invoice</b><span>Line and total tax, no new callout</span></li></ol>
+    <h3>Outcome</h3>
+    <p>Invoices carry the same tax as their orders, partial quantities included, and the invoice step no longer makes Avalara callouts.</p>
+  </div>
+</div>
+<div class="cs" id="cs-kafka-uhc" role="dialog" aria-modal="true" aria-labelledby="cs-title-kafka-uhc" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · CRMIT Solutions · UnitedHealthcare</span>
+    <h2 id="cs-title-kafka-uhc">UHC Kafka API Integration</h2>
+    <p class="cs-lede">A Java Spring Boot middleware that keeps Salesforce in real-time sync with events arriving on Kafka for UnitedHealthcare.</p>
+    <div class="cs-meta"><span>Role: built the middleware</span><span>Java · Spring Boot · Kafka · Salesforce APIs</span></div>
+    <h3>The problem</h3>
+    <p>UnitedHealthcare needed Salesforce to reflect changes as they happened. Events were published to Kafka, and each one had to become a create, update or delete in Salesforce without manual steps or batch delays.</p>
+    <h3>What I built</h3>
+    <ul><li><b>Spring Boot consumer:</b> listens to the Kafka topics and receives each event as it arrives.</li><li><b>Mapping layer:</b> turns the event payload into the matching Salesforce object and fields.</li><li><b>CRUD in Salesforce:</b> creates, updates or deletes the record through the Salesforce APIs, depending on the event.</li><li><b>Built for volume:</b> designed to keep up with a high-throughput stream of events.</li></ul>
+    <h3>How it flows</h3>
+    <ol class="cs-flow"><li><b>Source system</b><span>Publishes an event to Kafka</span></li><li><b>Spring Boot</b><span>Consumes and maps the event</span></li><li><b>Salesforce API</b><span>Create, update or delete</span></li><li><b>Salesforce</b><span>Record is current in real time</span></li></ol>
+    <h3>Why middleware in Java</h3>
+    <ul><li>Keeps Kafka handling outside Salesforce, so the org only receives clean API calls.</li><li>Spring Boot gives mature Kafka support and a simple place to add mapping rules.</li></ul>
+    <h3>Outcome</h3>
+    <p>Salesforce stays in sync with Kafka events in real time, with no manual updates or batch jobs.</p>
+  </div>
+</div>
+<div class="cs" id="cs-employee-portal" role="dialog" aria-modal="true" aria-labelledby="cs-title-employee-portal" hidden>
+  <div class="cs-panel">
+    <button type="button" class="cs-close" aria-label="Close case study">×</button>
+    <span class="eyebrow">Case study · CRMIT Solutions · Java</span>
+    <h2 id="cs-title-employee-portal">Employee Portal (Java full stack)</h2>
+    <p class="cs-lede">A small full-stack app built when the team needed Java developers: login and logout, employee records, and a UI rebuilt from Thymeleaf to React.</p>
+    <div class="cs-meta"><span>Role: built it, pairing with AI assistants</span><span>Java · Spring Boot · Hibernate · Thymeleaf · React</span></div>
+    <h3>Why I built it</h3>
+    <p>My team at CRMIT needed Java developers, so I picked up the Spring ecosystem by building a working app end to end, using ChatGPT and Claude as pair programmers to learn quickly.</p>
+    <h3>What it does</h3>
+    <ul><li>Users log in and log out.</li><li>Signed-in users see a list of employee records.</li></ul>
+    <h3>How it is built</h3>
+    <ul><li><b>Spring Boot</b> for the web layer and REST endpoints.</li><li><b>Hibernate (Spring Data JPA)</b> to map employee entities to the database.</li><li><b>Thymeleaf</b> for the first, server-rendered UI.</li><li><b>React</b> for the second version, calling the Spring Boot endpoints.</li></ul>
+    <h3>How a request flows</h3>
+    <ol class="cs-flow"><li><b>React</b><span>Calls an endpoint</span></li><li><b>Controller</b><span>Spring Boot handles the request</span></li><li><b>Repository</b><span>Hibernate reads the data</span></li><li><b>Database</b><span>Returns employee records</span></li></ol>
+    <h3>What I learned</h3>
+    <p>How a Java web app is layered from controller to service to repository, how JPA maps entities to tables, and how a React front end talks to a Spring Boot back end.</p>
+  </div>
+</div>
 
 <footer><div class="wrap"><span>© 2026 Tarun Sharma</span><span>India</span></div></footer>
 
@@ -1099,7 +1307,7 @@ body{padding-bottom:120px}
     clearTimeout(restTimer); state='rest';
     c.classList.remove('walking','left','carrying');
     setX(REST[s],0); restLook();
-    say(REST_LINE[s][0],REST_LINE[s][1],'write',10000);
+    say((window.festGreeting||'')+REST_LINE[s][0],REST_LINE[s][1],'write',10000);
   }
 
   function wake(line,cb){
@@ -1212,6 +1420,76 @@ body{padding-bottom:120px}
   }
   var cur=auto(); apply(cur);
   btn.addEventListener('click',function(){cur=order[(order.indexOf(cur)+1)%order.length];apply(cur)});
+})();
+
+
+/* case study dialog: opens from the card, or straight from a #case-skill-portal link */
+(function(){
+  var last=null;
+  function open(id){var d=document.getElementById('cs-'+id);if(!d)return;last=document.activeElement;d.hidden=false;document.body.classList.add('cs-lock');d.querySelector('.cs-close').focus()}
+  function close(d){d.hidden=true;document.body.classList.remove('cs-lock');if(last&&last.focus)last.focus()}
+  document.querySelectorAll('.cs-open').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();open(b.dataset.case)})});
+  document.querySelectorAll('.cs').forEach(function(d){
+    d.querySelector('.cs-close').addEventListener('click',function(){close(d)});
+    d.addEventListener('click',function(e){if(e.target===d)close(d)});
+  });
+  addEventListener('keydown',function(e){if(e.key==='Escape'){var d=document.querySelector('.cs:not([hidden])');if(d)close(d)}});
+  var hm=location.hash.match(/^#case-([a-z-]+)$/); if(hm) open(hm[1]);
+})();
+
+/* courier's eyes follow the pointer */
+(function(){
+  var c=document.getElementById('courier'), pupils=c&&c.querySelector('.pupils'), head=c&&c.querySelector('.head');
+  if(!pupils||matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var mx=0,my=0,queued=false;
+  function upd(){queued=false;
+    var r=head.getBoundingClientRect(); if(!r.width) return;
+    var cx=r.left+r.width/2, cy=r.top+r.height*0.6, dx=mx-cx, dy=my-cy, d=Math.hypot(dx,dy)||1, k=Math.min(1,d/220);
+    var px=dx/d*3.2*k, py=dy/d*2.6*k; if(c.classList.contains('left')) px=-px;
+    pupils.setAttribute('transform','translate('+px.toFixed(2)+' '+py.toFixed(2)+')');
+  }
+  addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;if(!queued){queued=true;requestAnimationFrame(upd)}},{passive:true});
+})();
+
+/* festive mode: Diwali, Christmas and New Year turn on by date; #diwali, #christmas or #newyear previews them */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, now=new Date(), m=now.getMonth()+1, d=now.getDate(), y=now.getFullYear();
+  var DIWALI={2026:[11,5,11,11]};   /* [startMonth,startDay,endMonth,endDay] around Lakshmi Puja */
+  function inRange(r){if(!r)return false;var a=r[0]*100+r[1],b=r[2]*100+r[3],x=m*100+d;return x>=a&&x<=b}
+  var fest=null, h=location.hash.replace('#','');
+  if(['diwali','christmas','newyear'].indexOf(h)>=0) fest=h;
+  else if(inRange(DIWALI[y])) fest='diwali';
+  else if(m===12&&d>=20) fest='christmas';
+  else if(m===1&&d<=3) fest='newyear';
+  if(!fest) return;
+  document.body.classList.add('fest-'+fest);
+  var GREET={diwali:'Happy Diwali! 🪔 ',christmas:'Merry Christmas! ',newyear:'Happy New Year! '};
+  window.festGreeting=GREET[fest].replace(' 🪔','');
+  if(window.courier){var sk=document.getElementById('sky');window.courier.setScene(sk.dataset.scene)}
+  if(fest==='diwali'){
+    var bulbs=document.getElementById('bulbs'), cols=['#F0B866','#E2574C','#6FD3C7','#FFD24A','#C77DFF'];
+    for(var i=0;i<26;i++){var b=document.createElement('i');b.style.color=b.style.background=cols[i%cols.length];b.style.animationDelay=(i%5*0.3)+'s';bulbs.appendChild(b)}
+  }
+  if(fest==='christmas'&&!reduce){
+    var snow=document.getElementById('snow');
+    for(var j=0;j<60;j++){var s=document.createElement('i');var sz=2+Math.random()*4;s.style.width=s.style.height=sz+'px';s.style.left=(Math.random()*100)+'%';
+      s.style.animationDuration=(8+Math.random()*10)+'s';s.style.animationDelay=(-Math.random()*18)+'s';s.style.setProperty('--sx',(Math.random()*60-30)+'px');snow.appendChild(s)}
+  }
+  if((fest==='diwali'||fest==='newyear')&&!reduce){
+    var cv=document.getElementById('fireworks'), ctx=cv.getContext('2d'), parts=[], W,H;
+    function size(){W=cv.width=innerWidth;H=cv.height=innerHeight} size(); addEventListener('resize',size);
+    var palette=['#FFD24A','#F0B866','#E2574C','#6FD3C7','#C77DFF','#FFFFFF'];
+    function burst(){var x=W*(0.1+Math.random()*0.8), yy=H*(0.08+Math.random()*0.35), col=palette[Math.floor(Math.random()*palette.length)];
+      for(var k=0;k<46;k++){var a=Math.PI*2*k/46, v=1.4+Math.random()*2.4;parts.push({x:x,y:yy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,col:col})}}
+    var last=0;
+    (function loop(t){
+      if(t-last>2200){burst();last=t}
+      ctx.clearRect(0,0,W,H);
+      parts=parts.filter(function(p){p.vy+=0.03;p.vx*=0.985;p.vy*=0.985;p.x+=p.vx;p.y+=p.vy;p.life-=0.012;
+        if(p.life<=0)return false; ctx.globalAlpha=p.life; ctx.fillStyle=p.col; ctx.beginPath(); ctx.arc(p.x,p.y,1.8,0,7); ctx.fill(); return true});
+      ctx.globalAlpha=1; requestAnimationFrame(loop);
+    })(0);
+  }
 })();
 
 /* count-up stats and skill-portal envelope flow, triggered when scrolled into view */
