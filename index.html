@@ -1430,7 +1430,7 @@ body{padding-bottom:120px}
   document.getElementById('bubbleX').addEventListener('click',function(e){e.stopPropagation();bubble.classList.add('hide')});
   c.querySelector('.flip').addEventListener('click',function(){
     if(busy) return;
-    if(state==='rest'){ say(REST_LINE[scene][0],REST_LINE[scene][1],'write',12000) }
+    if(state==='rest'){ say((window.festGreeting||'')+REST_LINE[scene][0],REST_LINE[scene][1],'write',12000) }
     else { wave(); say('Want to send Tarun a message? I will carry it for you.','Write a message','write',12000) }
   });
   addEventListener('resize',function(){if(!busy) setX(state==='rest'?REST[scene]:READY[scene],0)});
@@ -1506,10 +1506,23 @@ body{padding-bottom:120px}
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, now=new Date(), m=now.getMonth()+1, d=now.getDate(), y=now.getFullYear();
   /* [startMonth,startDay,endMonth,endDay] */
+  /* [festival, startMonth, startDay, endMonth, endDay]. Sources: Calendarific India holiday calendars 2026–2040, spot-checked with Astrosage and Drik Panchang. Eid follows moon sighting, so it can shift by a day. */
   var MOVING={
-    2026:{navratri:[10,11,10,19],dussehra:[10,20,10,21],diwali:[11,5,11,11]},
-    2027:{sankranti:[1,13,1,16],eid:[3,9,3,12],holi:[3,20,3,23],rakhi:[8,16,8,17],ganesh:[9,4,9,7],navratri:[9,30,10,8],dussehra:[10,9,10,10],diwali:[10,26,11,1]},
-    2028:{sankranti:[1,13,1,16],eid:[2,26,2,29],holi:[3,9,3,12],rakhi:[8,4,8,5],ganesh:[8,23,8,26],navratri:[9,19,9,26],dussehra:[9,27,9,28],diwali:[10,14,10,20]}
+    2026:[["navratri",10,11,10,19],["dussehra",10,20,10,21],["diwali",11,5,11,11]],
+    2027:[["sankranti",1,13,1,16],["eid",3,9,3,12],["holi",3,20,3,23],["rakhi",8,16,8,17],["ganesh",9,4,9,7],["navratri",9,30,10,8],["dussehra",10,9,10,10],["diwali",10,26,11,1]],
+    2028:[["sankranti",1,13,1,16],["eid",2,26,2,29],["holi",3,9,3,12],["rakhi",8,4,8,5],["ganesh",8,23,8,26],["navratri",9,19,9,26],["dussehra",9,27,9,28],["diwali",10,14,10,20]],
+    2029:[["sankranti",1,12,1,15],["eid",2,14,2,17],["holi",2,27,3,2],["rakhi",8,22,8,23],["ganesh",9,11,9,14],["navratri",10,8,10,15],["dussehra",10,16,10,17],["diwali",11,2,11,8]],
+    2030:[["sankranti",1,12,1,15],["eid",2,4,2,7],["holi",3,18,3,21],["rakhi",8,12,8,13],["ganesh",9,1,9,4],["navratri",9,28,10,5],["dussehra",10,6,10,7],["diwali",10,23,10,29]],
+    2031:[["sankranti",1,13,1,16],["eid",1,24,1,27],["holi",3,7,3,10],["rakhi",8,1,8,2],["ganesh",9,20,9,23],["navratri",10,17,10,24],["dussehra",10,25,10,26],["diwali",11,11,11,17]],
+    2032:[["sankranti",1,13,1,16],["eid",1,14,1,17],["holi",3,25,3,28],["rakhi",8,19,8,20],["ganesh",9,8,9,11],["navratri",10,5,10,13],["dussehra",10,14,10,15],["diwali",10,30,11,5]],
+    2033:[["sankranti",1,12,1,15],["eid",1,2,1,5],["eid",12,23,12,26],["holi",3,14,3,17],["rakhi",8,9,8,10],["ganesh",8,28,8,31],["navratri",9,24,10,2],["dussehra",10,3,10,4],["diwali",10,19,10,25]],
+    2034:[["sankranti",1,12,1,15],["eid",12,12,12,15],["holi",3,3,3,6],["rakhi",8,28,8,29],["ganesh",9,16,9,19],["navratri",10,13,10,21],["dussehra",10,22,10,23],["diwali",11,7,11,13]],
+    2035:[["sankranti",1,13,1,16],["eid",12,1,12,4],["holi",3,22,3,25],["rakhi",8,17,8,18],["ganesh",9,5,9,8],["navratri",10,2,10,10],["dussehra",10,11,10,12],["diwali",10,27,11,2]],
+    2036:[["sankranti",1,13,1,16],["eid",11,19,11,22],["holi",3,10,3,13],["rakhi",8,5,8,6],["ganesh",8,24,8,27],["navratri",9,20,9,28],["dussehra",9,29,9,30],["diwali",10,15,10,21]],
+    2037:[["sankranti",1,12,1,15],["eid",11,8,11,11],["holi",2,28,3,3],["rakhi",8,24,8,25],["ganesh",9,12,9,15],["navratri",10,9,10,17],["dussehra",10,18,10,19],["diwali",11,4,11,10]],
+    2038:[["sankranti",1,12,1,15],["eid",10,29,11,1],["holi",3,19,3,22],["rakhi",8,13,8,14],["ganesh",9,2,9,5],["navratri",9,29,10,6],["dussehra",10,7,10,8],["diwali",10,24,10,30]],
+    2039:[["sankranti",1,13,1,16],["eid",10,19,10,22],["holi",3,9,3,12],["rakhi",8,3,8,4],["ganesh",8,23,8,26],["navratri",10,18,10,25],["dussehra",10,26,10,27],["diwali",11,12,11,18]],
+    2040:[["sankranti",1,13,1,16],["eid",10,7,10,10],["holi",3,27,3,30],["rakhi",8,21,8,22],["ganesh",9,10,9,13],["navratri",10,7,10,14],["dussehra",10,15,10,16],["diwali",11,1,11,7]]
   };
   var FIXED={newyear:[1,1,1,3],republic:[1,24,1,27],independence:[8,13,8,16],christmas:[12,20,12,31]};
   var INFO={
@@ -1530,8 +1543,8 @@ body{padding-bottom:120px}
   var fest=null, h=location.hash.replace('#','');
   if(INFO[h]) fest=h;
   else{
-    var yr=MOVING[y]||{}, k;
-    for(k in yr) if(inRange(yr[k])){fest=k;break}
+    var yr=(MOVING[y]||[]).slice().sort(function(a,b){return (a[3]*100+a[4]-a[1]*100-a[2]-(a[0]==='eid'?.5:0))-(b[3]*100+b[4]-b[1]*100-b[2]-(b[0]==='eid'?.5:0))}), k, i;  /* shorter festivals win when two overlap */
+    for(i=0;i<yr.length;i++) if(inRange(yr[i].slice(1))){fest=yr[i][0];break}
     if(!fest) for(k in FIXED) if(inRange(FIXED[k])){fest=k;break}
   }
   if(!fest) return;
