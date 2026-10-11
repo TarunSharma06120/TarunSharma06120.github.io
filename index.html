@@ -303,6 +303,33 @@ nav{position:sticky}
 @media (prefers-reduced-motion:reduce){.chain li .mail{transition:none}.caret{animation:none}}
 
 [hidden]{display:none!important}
+/* cursor buddy: a tiny character that appears beside the pointer on interactive elements */
+.buddy{position:fixed;left:0;top:0;z-index:80;pointer-events:none;display:flex;align-items:flex-end;gap:4px;opacity:0;transition:opacity .15s ease;will-change:transform}
+.buddy.on{opacity:1}
+.buddy .fig{width:40px;height:53px;flex:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+.buddy.on .fig{animation:buddyPop .28s cubic-bezier(.2,1.5,.4,1) both,buddyBob 1.3s ease-in-out .3s infinite}
+.buddy .shirt{fill:var(--b-shirt,#0A6C6A)}
+.buddy .cap{fill:var(--b-cap,#08595A)}
+.buddy .acc{display:none}
+.buddy .arm{transform-box:fill-box;transform-origin:50% 10%}
+.buddy[data-look="book"]{--b-shirt:#7B5CD6;--b-cap:#5A3FB8}.buddy[data-look="book"] .acc-book{display:inline}
+.buddy[data-look="mail"]{--b-shirt:#0A6C6A;--b-cap:#08595A}.buddy[data-look="mail"] .acc-mail{display:inline}
+.buddy[data-look="laptop"]{--b-shirt:#44515C;--b-cap:#2B3A47}.buddy[data-look="laptop"] .acc-laptop{display:inline}
+.buddy[data-look="medal"]{--b-shirt:#B86E12;--b-cap:#8A5210}.buddy[data-look="medal"] .acc-medal{display:inline}
+.buddy[data-look="paper"]{--b-shirt:#2F6FB3;--b-cap:#1F4F86}.buddy[data-look="paper"] .acc-paper{display:inline}
+.buddy[data-look="lens"]{--b-shirt:#8B5A2B;--b-cap:#6B4220}.buddy[data-look="lens"] .acc-lens{display:inline}
+.buddy[data-look="wave"]{--b-shirt:#0A66C2;--b-cap:#084E96}.buddy[data-look="wave"].on .arm{animation:buddyWave .5s ease-in-out infinite alternate}
+.buddy[data-look="sky"]{--b-shirt:#E2574C;--b-cap:#F0B866}.buddy[data-look="sky"] .acc-sky{display:inline}
+.buddy-msg{margin-bottom:30px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px 12px 12px 4px;padding:6px 10px;font-size:13px;font-weight:500;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(0,0,0,.4)}
+.buddy.flip{flex-direction:row-reverse}
+.buddy.flip .buddy-msg{border-radius:12px 12px 4px 12px}
+.buddy.flip .fig{transform:scaleX(-1)}
+@keyframes buddyPop{from{transform:scale(.3) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@keyframes buddyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes buddyWave{from{transform:rotate(0)}to{transform:rotate(-140deg)}}
+.buddy.flip.on .fig{animation:none}
+@media (prefers-reduced-motion:reduce){.buddy .fig,.buddy .arm{animation:none!important}}
+
 /* case study dialog */
 .cs-open{margin-top:12px;align-self:flex-start;font-family:var(--mono);font-size:13px;padding:8px 14px;border-radius:999px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
 .cs-open:hover{background:var(--accent);color:var(--bg)}
@@ -1045,6 +1072,26 @@ body{padding-bottom:120px}
   </div>
 </div>
 
+<div class="buddy" id="buddy" aria-hidden="true">
+  <svg class="fig" viewBox="0 0 44 58">
+    <g class="acc acc-sky"><circle cx="36" cy="7" r="5" fill="#FFD24A"/><path d="M36 0v2M36 12v2M29 7h2M41 7h2" stroke="#FFD24A" stroke-width="1.4" stroke-linecap="round"/></g>
+    <rect x="13" y="45" width="5" height="10" rx="2.5" fill="#1F3A5F"/><rect x="22" y="45" width="5" height="10" rx="2.5" fill="#1F3A5F"/>
+    <rect x="10" y="28" width="20" height="19" rx="7" class="shirt"/>
+    <g class="arm"><rect x="27" y="30" width="5" height="13" rx="2.5" class="shirt"/></g>
+    <circle cx="20" cy="18" r="10" fill="#F2C29A"/>
+    <path d="M10 16 Q11 6 20 6 Q29 6 30 16 Z" class="cap"/><rect x="20" y="13" width="12" height="3" rx="1.5" class="cap"/>
+    <circle cx="17" cy="19" r="1.4" fill="#1A1A1A"/><circle cx="23" cy="19" r="1.4" fill="#1A1A1A"/>
+    <path d="M17 23 Q20 25.5 23 23" stroke="#7A3B2A" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <g class="acc acc-book"><circle cx="17" cy="19" r="2.8" fill="none" stroke="#1A1A1A" stroke-width="1"/><circle cx="23" cy="19" r="2.8" fill="none" stroke="#1A1A1A" stroke-width="1"/><rect x="28" y="33" width="12" height="10" rx="1" fill="#F6F1E3" stroke="#7B5CD6" stroke-width="1.4"/><path d="M34 33v10" stroke="#7B5CD6" stroke-width="1.2"/></g>
+    <g class="acc acc-mail"><rect x="28" y="35" width="12" height="8" rx="1" fill="#FFFFFF" stroke="#9AA9B4"/><path d="M28.5 35.5 L34 39.5 L39.5 35.5" stroke="#9AA9B4" fill="none"/></g>
+    <g class="acc acc-laptop"><rect x="8" y="27" width="24" height="13" rx="1.5" fill="#2B3A47"/><rect x="10" y="29" width="20" height="9" fill="#6FD3C7" opacity=".8"/><rect x="5" y="40" width="30" height="3" rx="1.5" fill="#566472"/></g>
+    <g class="acc acc-medal"><path d="M31 30 L34 36 L37 30" stroke="#E2574C" stroke-width="2.4" fill="none"/><circle cx="34" cy="40" r="5" fill="#F0B866" stroke="#B86E12"/><path d="M34 37.6 l.8 1.6 1.7.2-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7-1.2-1.2 1.7-.2z" fill="#FFF3D6"/></g>
+    <g class="acc acc-paper"><rect x="29" y="30" width="10" height="13" rx="1" fill="#FFFFFF" stroke="#2F6FB3"/><path d="M31 33h6M31 35.5h6M31 38h4" stroke="#9AB8DA" stroke-width="1"/><path d="M34 44v6M31.5 47.5 34 50l2.5-2.5" stroke="#2F6FB3" stroke-width="1.4" fill="none" stroke-linecap="round"/></g>
+    <g class="acc acc-lens"><circle cx="35" cy="36" r="4.5" fill="rgba(255,255,255,.4)" stroke="#6B4220" stroke-width="1.6"/><path d="M38 39.5 l4 4" stroke="#6B4220" stroke-width="2" stroke-linecap="round"/></g>
+  </svg>
+  <span class="buddy-msg" id="buddyMsg"></span>
+</div>
+
 <footer><div class="wrap"><span>© 2026 Tarun Sharma</span><span>India</span></div></footer>
 
 <script>
@@ -1447,6 +1494,10 @@ body{padding-bottom:120px}
     var cx=r.left+r.width/2, cy=r.top+r.height*0.6, dx=mx-cx, dy=my-cy, d=Math.hypot(dx,dy)||1, k=Math.min(1,d/220);
     var px=dx/d*3.2*k, py=dy/d*2.6*k; if(c.classList.contains('left')) px=-px;
     pupils.setAttribute('transform','translate('+px.toFixed(2)+' '+py.toFixed(2)+')');
+    if(c.classList.contains('lie')){head.removeAttribute('transform');return}
+    var ang=Math.max(-9,Math.min(9,dx/40)); if(c.classList.contains('left')) ang=-ang;
+    var nod=Math.max(-4,Math.min(4,dy/60));
+    head.setAttribute('transform','rotate('+(ang+nod*(dx<0?-1:1)*0.4).toFixed(2)+' 40 44)');
   }
   addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;if(!queued){queued=true;requestAnimationFrame(upd)}},{passive:true});
 })();
@@ -1490,6 +1541,52 @@ body{padding-bottom:120px}
       ctx.globalAlpha=1; requestAnimationFrame(loop);
     })(0);
   }
+})();
+
+
+/* cursor buddy: picks a look and a line for whatever interactive thing the pointer is on */
+(function(){
+  if(!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  var buddy=document.getElementById('buddy'), msg=document.getElementById('buddyMsg');
+  var RULES=[
+    ['.cs-open','Wanna read how I built it?','book'],
+    ['a[download]','Grab my resume!','paper'],
+    ['a[href*="linkedin.com"]','Let’s connect on LinkedIn','wave'],
+    ['a[href*="trailblazer"]','172 badges in here!','medal'],
+    ['.btn.primary','Say hi, Tarun replies fast','mail'],
+    ['#chat button, #chat input, #chat textarea','I’ll deliver this to Tarun','mail'],
+    ['.qtabs button, #runBtn','Run a live SOQL query','laptop'],
+    ['.filters button','Filter the projects','lens'],
+    ['#themeBtn','Change the sky!','sky'],
+    ['.certs li','Certified by Salesforce','medal'],
+    ['.trophy','Employee of the Quarter!','medal'],
+    ['nav ul a','Jump to this section','lens'],
+    ['.cs-close','Done reading? Close it here','book']
+  ];
+  var cur=null, x=-200, y=-200, tx=-200, ty=-200, raf=null;
+  function match(el){for(var i=0;i<RULES.length;i++){var m=el&&el.closest&&el.closest(RULES[i][0]);if(m)return {el:m,rule:RULES[i]}}return null}
+  function place(){
+    x+= (tx-x)*0.35; y+=(ty-y)*0.35;
+    var w=buddy.offsetWidth, flip=tx+18+w>innerWidth-8;
+    buddy.classList.toggle('flip',flip);
+    var left=flip? x-18-w : x+18, top=Math.min(y+14, innerHeight-buddy.offsetHeight-6);
+    buddy.style.transform='translate('+left.toFixed(1)+'px,'+top.toFixed(1)+'px)';
+    if(Math.abs(tx-x)>.5||Math.abs(ty-y)>.5) raf=requestAnimationFrame(place); else raf=null;
+  }
+  function show(hit){
+    if(cur&&cur.el===hit.el) return;
+    cur=hit; buddy.dataset.look=hit.rule[2]; msg.textContent=hit.rule[1];
+    buddy.classList.remove('on'); void buddy.offsetWidth; buddy.classList.add('on');
+  }
+  function hide(){cur=null;buddy.classList.remove('on')}
+  addEventListener('pointermove',function(e){
+    tx=e.clientX; ty=e.clientY;
+    var hit=match(e.target);
+    if(hit){ if(!cur){x=tx;y=ty} show(hit); if(!raf) raf=requestAnimationFrame(place) }
+    else if(cur) hide();
+  },{passive:true});
+  document.addEventListener('pointerleave',hide);
+  addEventListener('scroll',function(){if(cur)hide()},{passive:true});
 })();
 
 /* count-up stats and skill-portal envelope flow, triggered when scrolled into view */
